@@ -2,8 +2,8 @@
 #include "../include/Handle.h"
 
 ent::Handle ent::Manager::newEntity() {
-    ent::Handle handle = createHandle(++nextID_);
-    entities_.push_back(handle.id());
+    ent::Handle handle = createHandle(++nextID);
+    entities.push_back(handle.id());
     return handle;
 }
 
@@ -12,43 +12,43 @@ ent::Handle ent::Manager::createHandle(ent::EntityID entityID) {
 }
 
 ent::Mask& ent::Manager::getMask(ent::EntityID entityID) {
-    return entityMaskMap_[entityID];
+    return entityMaskMap[entityID];
 }
 
 void ent::Manager::removeEntity(ent::EntityID entityID) {
     notifyEntityRemoved(entityID);
     // TODO Recycle ids
-    for(auto& comp : entityCompMap_[entityID]) {
+    for(auto& comp : entityCompMap[entityID]) {
         if(comp != nullptr) {
             comp.reset(nullptr);
         }
     }
-    entityMaskMap_[entityID].reset();
-    entities_.erase(std::find(entities_.begin(), entities_.end(), entityID));
+    entityMaskMap[entityID].reset();
+    entities.erase(std::find(entities.begin(), entities.end(), entityID));
 }
 
 void ent::Manager::attach(ent::BaseSystem &system) {
-    systems_.push_back(&system);
-    system.managerRef_ = this;
-    for(auto& entity : entities_) {
+    systems.push_back(&system);
+    system.managerRef = this;
+    for(auto& entity : entities) {
         system.entityAdded(entity);
     }
 }
 
 void ent::Manager::notifyEntityRemoved(ent::EntityID id) {
-    for(auto& system : systems_) {
+    for(auto& system : systems) {
         system->entityRemoved(id);
     }
 }
 
 void ent::Manager::notifyEntityModified(ent::EntityID id) {
-    for(auto& system : systems_) {
+    for(auto& system : systems) {
         system->entityModified(id);
     }
 }
 
 void ent::Manager::update(double dt) {
-    for(auto& system : systems_) {
+    for(auto& system : systems) {
         system->update(dt);
     }
 }

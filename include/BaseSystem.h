@@ -11,9 +11,9 @@ namespace ent {
     class BaseSystem {
     protected:
         friend class Manager;
-        Mask filter_;
-        std::vector<Handle> entities_;
-        Manager* managerRef_;
+        Mask filter;
+        std::vector<Handle> entities;
+        Manager* managerRef;
 
         void entityAdded(EntityID entityID);
         void entityRemoved(EntityID entityID);

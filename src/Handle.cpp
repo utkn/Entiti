@@ -1,10 +1,10 @@
 #include "../include/Handle.h"
 
 void ent::Handle::destroy() {
-    managerRef_->removeEntity(id_);
-    managerRef_ = nullptr;
+    managerRef->removeEntity(id);
+    managerRef = nullptr;
 }
 
-ent::EntityID ent::Handle::id() {
-    return id_;
+ent::EntityID ent::Handle::getID() {
+    return id;
 }

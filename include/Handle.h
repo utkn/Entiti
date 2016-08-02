@@ -5,34 +5,35 @@
 
 namespace ent {
     class Handle {
-    private:
-        Manager* managerRef_;
-        EntityID id_;
     public:
-        Handle(Manager* manager, EntityID id) : managerRef_(manager), id_(id) {}
+        Handle(Manager* manager, EntityID id) : managerRef(manager), id(id) {}
         template <typename T, typename... Args>
         void add(Args&&... args) {
-            managerRef_->add<T>(id_, std::forward<Args>(args)...);
+            managerRef->add<T>(id, std::forward<Args>(args)...);
         }
 
         template <typename T>
         T& get() {
-            return managerRef_->get<T>(id_);
+            return managerRef->get<T>(id);
         }
 
         template <typename T>
         void remove() {
-            managerRef_->remove<T>(id_);
+            managerRef->remove<T>(id);
         }
 
         template <typename T>
         bool has() {
-            return managerRef_->getMask(id_)[CompIDGenerator::get<T>()];
+            return managerRef->getMask(id)[CompIDGenerator::get<T>()];
         }
 
         void destroy();
-        EntityID id();
+        EntityID getID();
+    private:
+        Manager* managerRef;
+        EntityID id;
     };
+
 }
 
 #endif //ENTITI_ENTITYHANDLE_H

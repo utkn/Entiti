@@ -8,7 +8,7 @@ namespace ent {
     class System : public BaseSystem {
     protected:
         System() {
-            expand((filter_[CompIDGenerator::get<Deps>()] = true)...);
+            expand((filter[CompIDGenerator::get<Deps>()] = true)...);
         }
     };
 }

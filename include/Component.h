@@ -2,7 +2,7 @@
 #define ENTITI_COMPONENT_H
 
 namespace ent {
-    class Component {};
+    struct Component {};
 }
 
 #endif //ENTITI_COMPONENT_H

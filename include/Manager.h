@@ -9,11 +9,6 @@ namespace ent {
     class Handle;
 
     class Manager {
-        EntityID nextID_ = 0;
-        EntityCompMap entityCompMap_;
-        EntityMaskMap entityMaskMap_;
-        std::vector<EntityID> entities_;
-        std::vector<BaseSystem*> systems_;
     public:
         Handle newEntity();
         Handle createHandle(EntityID entityID);
@@ -27,23 +22,29 @@ namespace ent {
         template <typename T, typename... Args>
         void add(EntityID entityID, Args&&... args) {
             EntityID compID = CompIDGenerator::get<T>();
-            entityCompMap_[entityID][compID].reset(new T(std::forward<Args>(args)...));
-            entityMaskMap_[entityID][compID] = true;
+            entityCompMap[entityID][compID].reset(new T(std::forward<Args>(args)...));
+            entityMaskMap[entityID][compID] = true;
             notifyEntityModified(entityID);
         }
 
         template <typename T>
         void remove(EntityID entityID) {
             EntityID compID = CompIDGenerator::get<T>();
-            entityCompMap_[entityID][compID].reset(nullptr);
-            entityMaskMap_[entityID][compID] = false;
+            entityCompMap[entityID][compID].reset(nullptr);
+            entityMaskMap[entityID][compID] = false;
             notifyEntityModified(entityID);
         }
 
         template <typename T>
         T& get(EntityID entityID) {
-            return *static_cast<T*>(entityCompMap_[entityID][CompIDGenerator::get<T>()].get());
+            return *static_cast<T*>(entityCompMap[entityID][CompIDGenerator::get<T>()].get());
         }
+    private:
+        EntityID nextID = 0;
+        EntityCompMap entityCompMap;
+        EntityMaskMap entityMaskMap;
+        std::vector<EntityID> entities;
+        std::vector<BaseSystem*> systems;
     };
 }
 

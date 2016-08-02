@@ -5,31 +5,31 @@
 
 void ent::BaseSystem::entityAdded(ent::EntityID entityID) {
     if(satisfies(entityID)) {
-        entities_.push_back(managerRef_->createHandle(entityID));
+        entities.push_back(managerRef->createHandle(entityID));
     }
 }
 
 void ent::BaseSystem::entityRemoved(ent::EntityID entityID) {
     if(satisfies(entityID)) {
-        entities_.erase(findEntity(entityID));
+        entities.erase(findEntity(entityID));
     }
 }
 
 void ent::BaseSystem::entityModified(ent::EntityID entityID) {
     auto find = findEntity(entityID);
-    if(satisfies(entityID) && find == entities_.end()) {
-        entities_.push_back(managerRef_->createHandle(entityID));
-    } else if(!satisfies(entityID) && find != entities_.end()) {
-        entities_.erase(find);
+    if(satisfies(entityID) && find == entities.end()) {
+        entities.push_back(managerRef->createHandle(entityID));
+    } else if(!satisfies(entityID) && find != entities.end()) {
+        entities.erase(find);
     }
 }
 
 bool ent::BaseSystem::satisfies(ent::EntityID entityID) {
-    return (filter_ & managerRef_->getMask(entityID)) == filter_;
+    return (filter & managerRef->getMask(entityID)) == filter;
 }
 
 std::vector<ent::Handle>::iterator ent::BaseSystem::findEntity(ent::EntityID entityID) {
-    return std::find_if(entities_.begin(), entities_.end(), [&](ent::Handle& handle) {
+    return std::find_if(entities.begin(), entities.end(), [&](ent::Handle& handle) {
         return handle.id() == entityID;
     });
 }
