@@ -15,17 +15,6 @@ namespace ent {
     typedef std::bitset<MAX_COMPONENTS> Mask;
     typedef std::unordered_map<EntityID, Mask> EntityMaskMap;
 
-    struct CompIDGenerator {
-    public:
-        template <typename T>
-        static CompID get() {
-            static CompID id = next++;
-            return id;
-        }
-    private:
-        static CompID next;
-    };
-
     template <typename... Args>
     void expand(Args&&... args) {}
 }

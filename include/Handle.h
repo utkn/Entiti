@@ -6,32 +6,32 @@
 namespace ent {
     class Handle {
     public:
-        Handle(Manager* manager, EntityID id) : managerRef(manager), id(id) {}
+        Handle(Manager* manager, EntityID id) : m_managerRef(manager), m_id(id) {}
         template <typename T, typename... Args>
         void add(Args&&... args) {
-            managerRef->add<T>(id, std::forward<Args>(args)...);
+            m_managerRef->addComponent<T>(m_id, std::forward<Args>(args)...);
         }
 
         template <typename T>
         T& get() {
-            return managerRef->get<T>(id);
+            return m_managerRef->getComponent<T>(m_id);
         }
 
         template <typename T>
         void remove() {
-            managerRef->remove<T>(id);
+            m_managerRef->removeComponent<T>(m_id);
         }
 
         template <typename T>
         bool has() {
-            return managerRef->getMask(id)[CompIDGenerator::get<T>()];
+            return m_managerRef->getMask(m_id)[m_managerRef->getCompId<T>()];
         }
 
         void destroy();
         EntityID getID();
     private:
-        Manager* managerRef;
-        EntityID id;
+        Manager* m_managerRef;
+        EntityID m_id;
     };
 
 }

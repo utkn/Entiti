@@ -19,9 +19,9 @@ namespace ent {
         virtual void update(double dt) = 0;
     protected:
         friend class Manager;
-        Mask filter;
-        std::vector<Handle> entities;
-        Manager* managerRef;
+        Mask m_filter;
+        std::vector<Handle> m_entities;
+        Manager* m_managerRef;
     };
 }
 
