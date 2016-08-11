@@ -10,50 +10,50 @@ namespace ent {
 
     class Manager {
     public:
-        Handle newEntity();
-        Handle createHandle(EntityID entityID);
-        void removeEntity(EntityID entityID);
-        Mask& getMask(EntityID entityID);
-        void attachSystem(BaseSystem &system);
-        void notifyEntityRemoved(EntityID id);
-        void notifyEntityModified(EntityID id);
+        Handle new_entity();
+        Handle create_handle(EntityID entityID);
+        void remove_entity(EntityID entityID);
+        Mask& get_mask(EntityID entityID);
+        void attach_system(BaseSystem &system);
+        void notify_entity_removed(EntityID id);
+        void notify_entity_modified(EntityID id);
         void update(double dt);
 
         template <typename T, typename... Args>
-        void addComponent(EntityID entityID, Args &&... args) {
-            EntityID compID = getCompId<T>();
-            m_entityCompMap[entityID][compID].reset(new T(std::forward<Args>(args)...));
-            m_entityMaskMap[entityID][compID] = true;
-            notifyEntityModified(entityID);
+        void add_component(EntityID entityID, Args &&... args) {
+            EntityID compID = get_comp_id<T>();
+            m_entity_comp_map[entityID][compID].reset(new T(std::forward<Args>(args)...));
+            m_entity_mask_map[entityID][compID] = true;
+            notify_entity_modified(entityID);
         }
 
         template <typename T>
-        void removeComponent(EntityID entityID) {
-            EntityID compID = getCompId<T>();
-            m_entityCompMap[entityID][compID].reset(nullptr);
-            m_entityMaskMap[entityID][compID] = false;
-            notifyEntityModified(entityID);
+        void remove_component(EntityID entityID) {
+            EntityID compID = get_comp_id<T>();
+            m_entity_comp_map[entityID][compID].reset(nullptr);
+            m_entity_mask_map[entityID][compID] = false;
+            notify_entity_modified(entityID);
         }
 
         template <typename T>
-        T& getComponent(EntityID entityID) {
-            return *static_cast<T*>(m_entityCompMap[entityID][getCompId<T>()].get());
+        T& get_component(EntityID entityID) {
+            return *static_cast<T*>(m_entity_comp_map[entityID][get_comp_id<T>()].get());
         }
 
         template <typename T>
-        CompID getCompId() {
-            static CompID id = ++m_nextCompID;
+        CompID get_comp_id() {
+            static CompID id = ++m_next_comp_id;
             return id;
         }
 
     private:
-        EntityID m_nextEntityID = 0;
-        CompID m_nextCompID = 0;
+        EntityID m_next_entity_id = 0;
+        CompID m_next_comp_id = 0;
 
-        EntityCompMap m_entityCompMap;
-        EntityMaskMap m_entityMaskMap;
+        EntityCompMap m_entity_comp_map;
+        EntityMaskMap m_entity_mask_map;
         std::vector<EntityID> m_entities;
-        std::vector<std::unique_ptr<BaseSystem>> m_systems;
+        std::vector<BaseSystem*> m_systems;
     };
 }
 

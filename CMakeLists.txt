@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.5)
 project(Entiti)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/lib")
 
 set(SOURCE_FILES src/BaseSystem.cpp include/BaseSystem.h include/Component.h include/Entiti.h src/Handle.cpp include/Handle.h src/Manager.cpp include/Manager.h include/Misc.h include/System.h)
 add_library(Entiti ${SOURCE_FILES})
